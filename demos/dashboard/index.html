@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Panel + Video conferencia + Chat + Compartir Ficheros</title>
+  <title>Panel Videoconferencias</title>
   <meta name="description" content="WebRTC Dashboard including support for canvas drawing, canvas data syncing, video conferencing, screen sharing and video conferencing. Including chat and file sharing.">
 
   <link rel="shortcut icon" href="/demos/logo.png">
@@ -51,7 +51,8 @@ a:hover {
     float: left;
     margin-left: 20px;
     display: block;
-    height: 55px;
+    height: 100px;
+    width: 100px
 }
 
 .logo-text {
@@ -61,6 +62,7 @@ a:hover {
     margin-left: 9px;
     font-weight: bold;
     color: #0194ff;
+    padding-bottom: 100px;
 }
 
 section {
@@ -303,7 +305,7 @@ input[disabled], button[disabled] {
 </head>
 <body>
   <header style="margin-bottom: 100px;">
-    <img class="logo" src="/demos/logo.png" alt="" /> <span class="logo-text">Aulas Virtuales Átomo</span></h4>
+    <img class="logo" src="/demos/liveAtomo.png" alt="" /> <span class="logo-text">Aulas Virtuales Átomo</span></h4>
     <div style="float: right;margin-top: 15px;">
       <button class="btn btn-primary" data-toggle="modal" data-target="#startRoomModel">Crear clase virtual</button>
       <button id="btn-show-join-hidden-room" class="top-span btn btn-secondary" data-toggle="modal" data-target="#joinRoomModel">Unirse a clase</button>
@@ -720,7 +722,7 @@ $('#btn-create-room').click(function() {
     if($('#chk-room-password').prop('checked') === true){
       var roomPassword = $('#txt-room-password').val().toString();
       if (!roomPassword || !roomPassword.replace(/ /g, '').length) {
-          alertBox('Please enter room password.', 'Password Box Is Empty');
+          alertBox('Ingrese la contraseña de la conferencia.', 'Contraseña de conferencia vacio');
           return;
       }
 

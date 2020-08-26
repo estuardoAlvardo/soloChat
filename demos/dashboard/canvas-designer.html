@@ -125,11 +125,7 @@ input[disabled], button[disabled] {
     display: none;
 }
 
-hr {
-    height: 2px;
-    border: 0;
-    background:#3498db;
-}
+
 
 #btn-attach-file {
     width: 40px;
@@ -162,23 +158,17 @@ hr {
     height: 100%;
     z-index: 9999999999999;
     display: none;
-    margin-top: -180px;
-
+    margin-top: -100px;
 }
 
 
 .cardBox{
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
         cursor: pointer;
         border-radius: 10px;
 }
 
-.cardBox:hover{
-         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        cursor: pointer;
 
-}
 
 @keyframes latidos {
     from { transform: none; }
@@ -198,35 +188,59 @@ hr {
 
 }
 
+
 .message{
     border-radius: 10px;
     background-color: #eeeeee;
 }
+
+
+/* estilos para hover icons*/
+
+.cuadroNew:hover {
+  -webkit-animation: tiembla 0.2s 1;
+  -moz-animation: tiembla 0.2s 1;
+  -o-animation: tiembla 0.2s 1;
+ -ms-animation: tiembla 0.2s 1;
+ cursor:pointer;
+}
+
+@-webkit-keyframes tiembla {
+  0%  { -webkit-transform:rotateZ(-5deg); }
+  50% { -webkit-transform:rotateZ( 0deg) scale(1.4); }
+  100%{ -webkit-transform:rotateZ( 5deg);
+}
+
+
+
 </style>
 
-<article>
- <div class="nav" style="height: 80px; margin-bottom: 5px; margin-top: 20px; margin-left: 15px;">
-      <img src="../atomoLive.png" style="width: 50px; height: 50px;  animation: latidos .5s infinite;
+<article style="background-image: url('../fondo.jpeg'); background-size: cover;">
+ <div class="nav" style="height: 100px; margin-bottom: 5px; margin-top:0; margin-left: 15px;">
+      <img src="../liveAtomo.png" style="width: 50px; height: 50px; margin-top: 15px;  animation: latidos .5s infinite;
 ">  
-     <h4 style="margin-top: 15px; margin-left: 15px;">Átomo Conection</h4>
+     <h4 style="margin-top: 15px; margin-left: 15px; color: white;">Átomo Live<br> <span style="font-size: 15px; color: white;" id="nombreUsuario"></span><span id="rolEnviar" style="font-size: 10px; color: white;"></span></h4>
+   
+   
  </div>   
 
-<div id="widget-container" style="position: fixed;bottom: 0;right: 0;left: 30%;height: 100%;border: 1px solid red; border-top:0; border-bottom: 0; overflow-y: scroll;"></div>
-<video id="screen-viewer"   playsinline autoplay>
+<div id="widget-container" style="position: fixed;bottom: 0;right: 0;left: 30%;height: 100%; border-top:0; border-bottom: 0; overflow-y: scroll; box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); background-image: url('../fondo.jpeg'); background-size: cover; height: 100%;
+   width: 100% ;" ></div>
+<video id="screen-viewer"   playsinline autoplay >
     
 </video>
 
-<div style="width: 30%; height: 100%; position: absolute;left:0;">
+<div style="width: 30%; min-height: 100%; position: absolute;left:0; background-image: url('../fondo.jpeg'); background-size: cover;">
     <video id="main-video" controls playsinline autoplay></video>
 
     <div id="other-videos"></div>
     <hr>
-    <div style="padding: 5px 10px;" >
-        <img src="https://image.flaticon.com/icons/svg/811/811885.svg" class="cardBox" width="50" height="50" style="border-radius:100%; background-color:#ecf0f1; padding: 5px;" onclick="mostrarListaUsuarios();" >
+    <div style="padding: 5px 10px;"  >
+        <img src="https://image.flaticon.com/icons/svg/811/811885.svg" class="cardBox cuadroNew" width="50" height="50" style="border-radius:100%; background-color:white; padding: 5px;" onclick="mostrarListaUsuarios();" >
 
-        <div id="onUserStatusChanged">
+        <div id="onUserStatusChanged" style="background-color: white;">
         </div>
-         <img src="https://image.flaticon.com/icons/svg/929/929416.svg" id="iconCerrar" class="cardBox" style="width: 30px; height: 30px;  margin-left: 10px; display: none; border-radius: 100px; background-color:#ecf0f1;  " onclick="cerrarListaUsuarios();">
+         <img src="https://image.flaticon.com/icons/svg/929/929416.svg" id="iconCerrar" class="cardBox cuadroNew" style="width: 30px; height: 30px;  margin-left: 10px; display: none; border-radius: 100px; background-color:#ecf0f1;  " onclick="cerrarListaUsuarios();">
     </div>
 
     <script type="text/javascript">
@@ -243,7 +257,7 @@ hr {
         }
     </script>
 
-    <div style="margin-top: 20px; margin-left: 20px; position: relative; bottom: 0;background: white; padding-bottom: 20px; width: 85%">
+    <div style="margin-top: 20px; margin-left: 20px; position: relative; bottom: 0;background: white; padding-bottom: 20px; width: 85%; background-image: url('../fondo.jpeg'); background-size: cover;">
         <div id="conversation-panel"></div>
         <div id="key-press" style="text-align: right; display: none; font-size: 11px;">
             <span style="vertical-align: middle;"></span>
@@ -252,8 +266,8 @@ hr {
         <textarea id="txt-chat-message" placeholder="Mensaje para el grupo"></textarea>
         <button class="btn btn-primary" id="btn-chat-message" disabled>Enviar</button>
         <img id="btn-attach-file" src="https://image.flaticon.com/icons/svg/2921/2921290.svg" class="cardBox
-        " title="Compartir Archivos">
-        <img id="btn-share-screen" src="https://image.flaticon.com/icons/svg/3063/3063838.svg" class="cardBox" title="Compartir Pantalla">
+         cuadroNew" title="Compartir Archivos">
+        <img id="btn-share-screen" src="https://image.flaticon.com/icons/svg/3063/3063838.svg" class="cardBox cuadroNew" title="Compartir Pantalla">
 
     </div>
 
@@ -349,23 +363,45 @@ connection.sdpConstraints.mandatory = {
     OfferToReceiveVideo: true
 };
 
+//mostrar listado de usuarios conectados
 connection.onUserStatusChanged = function(event) {
+
     var infoBar = document.getElementById('onUserStatusChanged');
+    var nombreUsuario = document.getElementById('nombreUsuario');
+    var rolEnviar = document.getElementById('rolEnviar');
+    var rolEstablecer='';
     var names = [];
     connection.getAllParticipants().forEach(function(pid) {
         names.push(getFullName(pid));
     });
 
-    if (!names.length) {
+        if(params.open==true || params.open=='true'){
+        rolEnviar.innerHTML= '<em>(Docente) </em>';
+
+        
+            }else{
+                rolEnviar.innerHTML= '<em>(Alumno) </em>';
+            }
+
+    if(!names.length) {
         names = ['Estás en linea'];
     } else {
         names = [connection.extra.userFullName || 'Tú'].concat(names);
     }
 
     infoBar.innerHTML = '<b>Usuarios Activos:</b> <br>* ' + names.join('<br>* ');
+    
+    nombreUsuario.innerHTML='<em>Tú: '+connection.extra.userFullName+'</em>';
+
+
+    
+
+
+
 };
 
 connection.onopen = function(event) {
+
     connection.onUserStatusChanged(event);
 
     if (designer.pointsLength <= 0) {
@@ -383,13 +419,15 @@ connection.onopen = function(event) {
 
 connection.onclose = connection.onerror = connection.onleave = function(event) {
     connection.onUserStatusChanged(event);
+
+
 };
 
 connection.onmessage = function(event) {
+
     if(event.data.showMainVideo) {
          $('#main-video').show();
         $('#screen-viewer').css({
-            top: $('#widget-container').offset().top,
             left: $('#widget-container').offset().left,
             width: $('#widget-container').width(),
             height: $('#widget-container').height()
@@ -582,7 +620,15 @@ document.getElementById('btn-chat-message').onclick = function() {
 
 var recentFile;
 document.getElementById('btn-attach-file').onclick = function() {
+   
+    var arrayUsuarios = connection.getAllParticipants();
+
+    //damos permisos solamente al docente
+    if(params.open==true || params.open=='true'){
+
     var file = new FileSelector();
+   
+
     file.selectSingleFile(function(file) {
         recentFile = file;
 
@@ -591,11 +637,15 @@ document.getElementById('btn-attach-file').onclick = function() {
             connection.send(file, connection.getAllParticipants()[recentFile.userIndex]);
         }
     });
+
+}else{
+    alert('No tienes permiso para subir archivos');
+}
 };
 
 function getFileHTML(file) {
     var url = file.url || URL.createObjectURL(file);
-    var attachment = '<a href="' + url + '" target="_blank" download="' + file.name + '">Download: <b>' + file.name + '</b></a>';
+    var attachment = '<a href="' + url + '" target="_blank" Descargar="' + file.name + '">Descargar: <b>' + file.name + '</b></a>';
     if (file.name.match(/\.jpg|\.png|\.jpeg|\.gif/gi)) {
         attachment += '<br><img crossOrigin="anonymous" src="' + url + '">';
     } else if (file.name.match(/\.wav|\.mp3/gi)) {
@@ -851,6 +901,10 @@ $('#btn-share-screen').click(function() {
         alert('No tienes permiso para compartir pantalla.');
         return;
     }
+
+
+
+
 
     //$('#btn-share-screen').hide();
 
