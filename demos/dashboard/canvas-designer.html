@@ -1,12 +1,12 @@
 ﻿<!-- Demo version: 2018.12.11 -->
 
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="es" dir="ltr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Dashboard + Video Conferencing + Chat + File Sharing | RTCMultiConnection</title>
-  <meta name="description" content="WebRTC Dashboard including support for canvas drawing, canvas data syncing, video conferencing, screen sharing and video conferencing. Including chat and file sharing.">
+  <title>Átomo - Aula virtual Activa</title>
+  <meta name="description" content="Video conferencia Átomo Soluciones">
 
   <link rel="shortcut icon" href="/demos/logo.png">
   <link rel="stylesheet" type="text/css" href="/demos/css/emojionearea.min.css">
@@ -21,12 +21,15 @@
   <script src="/node_modules/canvas-designer/dev/webrtc-handler.js"></script>
   <script src="/node_modules/canvas-designer/canvas-designer-widget.js"></script>
   <script src="/demos/js/emojionearea.min.js"></script>
+
+  <link rel="stylesheet" href="/dev/getHTMLMediaElement.css">
+<script src="/dev/getHTMLMediaElement.js"></script>
   <!-- <script src="/node_modules/multistreamsmixer/MultiStreamsMixer.js"></script> -->
 
 <style type="text/css">
 html, body, section, ul, li, nav, a, h1, h2 {
-    padding: 0;
-    margin: 0;
+    padding: 10;
+    margin: 20;
     outline: none;
     text-shadow: none;
     box-shadow: none;
@@ -68,14 +71,16 @@ input[disabled], button[disabled] {
 
 #other-videos {
     margin-top: 5px;
+    overflow-y: scroll;
 }
 
 #other-videos video {
-    width: 45%;
+    width: 30%;
     margin: 5px;
-    border: 1px solid black;
     padding: 1px;
     border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
 }
 
 #txt-chat-message {
@@ -84,10 +89,11 @@ input[disabled], button[disabled] {
     margin: 5px;
     margin-right: 0;
     min-height: 30px;
+
 }
 
 #btn-chat-message {
-    margin: 5px;
+    margin: 10px;
 }
 
 #conversation-panel {
@@ -95,13 +101,16 @@ input[disabled], button[disabled] {
     text-align: left;
     max-height: 200px;
     overflow: auto;
-    border-top: 1px solid #E5E5E5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     width: 106%;
+    border-radius: 10px;
+
 }
 
 #conversation-panel .message {
     border-bottom: 1px solid #E5E5E5;
     padding: 5px 10px;
+    border-radius: 10px;
 }
 
 #conversation-panel .message img, #conversation-panel .message video, #conversation-panel .message iframe {
@@ -111,35 +120,37 @@ input[disabled], button[disabled] {
 #main-video {
     width: 100%;
     margin-top: -9px;
-    border-bottom: 1px solid #121010;
     display: none;
     padding-bottom: 1px;
     display: none;
 }
 
 hr {
-    height: 1px;
+    height: 2px;
     border: 0;
-    background: #E5E5E5;
+    background:#3498db;
 }
 
 #btn-attach-file {
-    width: 25px;
+    width: 40px;
     vertical-align: middle;
     cursor: pointer;
     display: none;
+    border-radius: 5px;
 }
 
 #btn-share-screen {
-    width: 25px;
+    width: 40px;
     vertical-align: middle;
     cursor: pointer;
     display: none;
+    border-radius: 5px;
+    background-color: 
 }
 
 .checkmark {
     display:none;
-    width: 15px;
+    width: 25px;
     vertical-align: middle;
 }
 
@@ -151,32 +162,99 @@ hr {
     height: 100%;
     z-index: 9999999999999;
     display: none;
+    margin-top: -180px;
+
+}
+
+
+.cardBox{
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        cursor: pointer;
+        border-radius: 10px;
+}
+
+.cardBox:hover{
+         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        cursor: pointer;
+
+}
+
+@keyframes latidos {
+    from { transform: none; }
+    50% { transform: scale(1.4); }
+    to { transform: none; }
+}
+
+#onUserStatusChanged{
+    border-radius: 5px;
+    padding: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.7s cubic-bezier(.25,.8,.25,1);
+    margin-left:15px; 
+    display: none;
+    min-height: 100px;
+
+
+}
+
+.message{
+    border-radius: 10px;
+    background-color: #eeeeee;
 }
 </style>
 
 <article>
+ <div class="nav" style="height: 80px; margin-bottom: 5px; margin-top: 20px; margin-left: 15px;">
+      <img src="../atomoLive.png" style="width: 50px; height: 50px;  animation: latidos .5s infinite;
+">  
+     <h4 style="margin-top: 15px; margin-left: 15px;">Átomo Conection</h4>
+ </div>   
 
-<div id="widget-container" style="position: fixed;bottom: 0;right: 0;left: 20%;height: 100%;border: 1px solid black; border-top:0; border-bottom: 0;"></div>
-<video id="screen-viewer" controls playsinline autoplay></video>
+<div id="widget-container" style="position: fixed;bottom: 0;right: 0;left: 30%;height: 100%;border: 1px solid red; border-top:0; border-bottom: 0; overflow-y: scroll;"></div>
+<video id="screen-viewer"   playsinline autoplay>
+    
+</video>
 
-<div style="width: 20%; height: 100%; position: absolute;left:0;">
+<div style="width: 30%; height: 100%; position: absolute;left:0;">
     <video id="main-video" controls playsinline autoplay></video>
+
     <div id="other-videos"></div>
     <hr>
-    <div style="padding: 5px 10px;">
-        <div id="onUserStatusChanged"></div>
+    <div style="padding: 5px 10px;" >
+        <img src="https://image.flaticon.com/icons/svg/811/811885.svg" class="cardBox" width="50" height="50" style="border-radius:100%; background-color:#ecf0f1; padding: 5px;" onclick="mostrarListaUsuarios();" >
+
+        <div id="onUserStatusChanged">
+        </div>
+         <img src="https://image.flaticon.com/icons/svg/929/929416.svg" id="iconCerrar" class="cardBox" style="width: 30px; height: 30px;  margin-left: 10px; display: none; border-radius: 100px; background-color:#ecf0f1;  " onclick="cerrarListaUsuarios();">
     </div>
 
-    <div style="margin-top: 20px;position: absolute;bottom: 0;background: white; padding-bottom: 20px; width: 94%">
+    <script type="text/javascript">
+       function mostrarListaUsuarios(){
+           document.getElementById('onUserStatusChanged').style.display="block"; 
+           document.getElementById('iconCerrar').style.display="block";
+
+        }
+
+        function cerrarListaUsuarios(){
+            document.getElementById('onUserStatusChanged').style.display="none"; 
+           document.getElementById('iconCerrar').style.display="none";
+
+        }
+    </script>
+
+    <div style="margin-top: 20px; margin-left: 20px; position: relative; bottom: 0;background: white; padding-bottom: 20px; width: 85%">
         <div id="conversation-panel"></div>
         <div id="key-press" style="text-align: right; display: none; font-size: 11px;">
             <span style="vertical-align: middle;"></span>
-            <img src="https://www.webrtc-experiment.com/images/key-press.gif" style="height: 12px; vertical-align: middle;">
+            <img src="https://www.webrtc-experiment.com/images/key-press.gif" style="height: 30px; vertical-align: middle;">
         </div>
-        <textarea id="txt-chat-message"></textarea>
-        <button class="btn btn-primary" id="btn-chat-message" disabled>Send</button>
-        <img id="btn-attach-file" src="https://www.webrtc-experiment.com/images/attach-file.png" title="Attach a File">
-        <img id="btn-share-screen" src="https://www.webrtc-experiment.com/images/share-screen.png" title="Share Your Screen">
+        <textarea id="txt-chat-message" placeholder="Mensaje para el grupo"></textarea>
+        <button class="btn btn-primary" id="btn-chat-message" disabled>Enviar</button>
+        <img id="btn-attach-file" src="https://image.flaticon.com/icons/svg/2921/2921290.svg" class="cardBox
+        " title="Compartir Archivos">
+        <img id="btn-share-screen" src="https://image.flaticon.com/icons/svg/3063/3063838.svg" class="cardBox" title="Compartir Pantalla">
+
     </div>
 
     <canvas id="temp-stream-canvas" style="display: none;"></canvas>
@@ -204,23 +282,25 @@ connection.socketURL = '/';
 
 connection.extra.userFullName = params.userFullName;
 
-/// make this room public
+/// hacer pública esta habitación
+
 connection.publicRoomIdentifier = params.publicRoomIdentifier;
 
 connection.socketMessageEvent = 'canvas-dashboard-demo';
 
-// keep room opened even if owner leaves
+// mantener la habitación abierta incluso si el propietario se va
 connection.autoCloseEntireSession = true;
 
 // https://www.rtcmulticonnection.org/docs/maxParticipantsAllowed/
 connection.maxParticipantsAllowed = 1000;
-// set value 2 for one-to-one connection
+// establecer el valor 2 para la conexión uno a uno
 // connection.maxParticipantsAllowed = 2;
 
-// here goes canvas designer
+
+// aquí va el diseñador de lienzos
 var designer = new CanvasDesigner();
 
-// you can place widget.html anywhere
+// puedes colocar widget.html en cualquier lugar
 designer.widgetHtmlURL = '/node_modules/canvas-designer/widget.html';
 designer.widgetJsURL = '/node_modules/canvas-designer/widget.min.js'
 
@@ -244,7 +324,7 @@ designer.setTools({
     rectangle: true,
     quadratic: false,
     bezier: true,
-    marker: true,
+    marker: false,
     zoom: false,
     lineWidth: false,
     colorsPicker: false,
@@ -253,7 +333,8 @@ designer.setTools({
     undo: true
 });
 
-// here goes RTCMultiConnection
+
+// aquí va RTCMultiConnection
 
 connection.chunkSize = 16000;
 connection.enableFileSharing = true;
@@ -276,19 +357,20 @@ connection.onUserStatusChanged = function(event) {
     });
 
     if (!names.length) {
-        names = ['Only You'];
+        names = ['Estás en linea'];
     } else {
-        names = [connection.extra.userFullName || 'You'].concat(names);
+        names = [connection.extra.userFullName || 'Tú'].concat(names);
     }
 
-    infoBar.innerHTML = '<b>Active users:</b> ' + names.join(', ');
+    infoBar.innerHTML = '<b>Usuarios Activos:</b> <br>* ' + names.join('<br>* ');
 };
 
 connection.onopen = function(event) {
     connection.onUserStatusChanged(event);
 
     if (designer.pointsLength <= 0) {
-        // make sure that remote user gets all drawings synced.
+        // se asegura de que el usuario remoto sincronice todos los dibujos.
+
         setTimeout(function() {
             connection.send('plz-sync-points');
         }, 1000);
@@ -305,7 +387,7 @@ connection.onclose = connection.onerror = connection.onleave = function(event) {
 
 connection.onmessage = function(event) {
     if(event.data.showMainVideo) {
-        // $('#main-video').show();
+         $('#main-video').show();
         $('#screen-viewer').css({
             top: $('#widget-container').offset().top,
             left: $('#widget-container').offset().left,
@@ -323,7 +405,7 @@ connection.onmessage = function(event) {
     }
 
     if(event.data.typing === true) {
-        $('#key-press').show().find('span').html(event.extra.userFullName + ' is typing');
+        $('#key-press').show().find('span').html(event.extra.userFullName + ' esta escribiendo');
         return;
     }
 
@@ -412,8 +494,9 @@ function appendChatMessage(event, checkmark_id) {
             });
         }
     } else {
-        div.innerHTML = '<b>You:</b> <img class="checkmark" id="' + checkmark_id + '" title="Received" src="https://www.webrtc-experiment.com/images/checkmark.png"><br>' + event;
-        div.style.background = '#cbffcb';
+        div.innerHTML = '<b>Tú:</b> <img class="checkmark" id="' + checkmark_id + '" title="Received" src="https://image.flaticon.com/icons/svg/1632/1632603.svg"><br>' + event;
+        div.style.background = '#3d5afe';
+        div.style.color="white";
     }
 
     conversationPanel.appendChild(div);
@@ -536,7 +619,7 @@ connection.onFileEnd = function(file) {
     var div = progressHelper[file.uuid].div;
 
     if (file.userid === connection.userid) {
-        div.innerHTML = '<b>You:</b><br>' + html;
+        div.innerHTML = '<b>Tú:</b><br>' + html;
         div.style.background = '#cbffcb';
 
         if(recentFile) {
@@ -578,7 +661,7 @@ connection.onFileStart = function(file) {
             userFullName = connection.peersBackup[file.remoteUserId].extra.userFullName;
         }
 
-        div.innerHTML = '<b>You (to: ' + userFullName + '):</b><br><label>0%</label> <progress></progress>';
+        div.innerHTML = '<b>Tú (enviado a: ' + userFullName + '):</b><br><label>0%</label> <progress></progress>';
         div.style.background = '#cbffcb';
     } else {
         div.innerHTML = '<b>' + getFullName(file.userid) + ':</b><br><label>0%</label> <progress></progress>';
@@ -635,7 +718,7 @@ designer.appendTo(document.getElementById('widget-container'), function() {
         connection.join(params.sessionid, function(isRoomJoined, roomid, error) {
             if (error) {
                 if (error === connection.errors.ROOM_NOT_AVAILABLE) {
-                    alert('This room does not exist. Please either create it or wait for moderator to enter in the room.');
+                    alert('Esta clase aún no existe. Espere a que el profesor ingrese a la clase.');
                     return;
                 }
                 if (error === connection.errors.ROOM_FULL) {
@@ -643,9 +726,9 @@ designer.appendTo(document.getElementById('widget-container'), function() {
                     return;
                 }
                 if (error === connection.errors.INVALID_PASSWORD) {
-                    connection.password = prompt('Please enter room password.') || '';
+                    connection.password = prompt('Ingrese cotraseña de la conferencia.') || '';
                     if(!connection.password.length) {
-                        alert('Invalid password.');
+                        alert('Contraseña invalida.');
                         return;
                     }
                     connection.join(params.sessionid, function(isRoomJoined, roomid, error) {
@@ -723,12 +806,12 @@ function replaceScreenTrack(stream) {
     stream.streamid = stream.id;
     stream.type = 'local';
 
-    // connection.attachStreams.push(stream);
+    connection.attachStreams.push(stream);
     connection.onstream({
         stream: stream,
         type: 'local',
         streamid: stream.id,
-        // mediaElement: video
+         mediaElement: stream
     });
 
     var screenTrackId = stream.getTracks()[0].id;
@@ -737,7 +820,7 @@ function replaceScreenTrack(stream) {
             hideMainVideo: true
         });
 
-        // $('#main-video').hide();
+       // $('#main-video').hide();
         $('#screen-viewer').hide();
         $('#btn-share-screen').show();
         replaceTrack(tempStream.getTracks()[0], screenTrackId);
@@ -753,7 +836,7 @@ function replaceScreenTrack(stream) {
         showMainVideo: true
     });
 
-    // $('#main-video').show();
+    $('#main-video').show();
     $('#screen-viewer').css({
             top: $('#widget-container').offset().top,
             left: $('#widget-container').offset().left,
@@ -765,29 +848,41 @@ function replaceScreenTrack(stream) {
 
 $('#btn-share-screen').click(function() {
     if(!window.tempStream) {
-        alert('Screen sharing is not enabled.');
+        alert('No tienes permiso para compartir pantalla.');
         return;
     }
 
-    $('#btn-share-screen').hide();
+    //$('#btn-share-screen').hide();
 
     if(navigator.mediaDevices.getDisplayMedia) {
-        navigator.mediaDevices.getDisplayMedia(screen_constraints).then(stream => {
+        navigator.mediaDevices.getDisplayMedia({video:true,audio:true}).then(stream => {
             replaceScreenTrack(stream);
         }, error => {
-            alert('Please make sure to use Edge 17 or higher.');
+            alert('No se pudo compartir.');
+        });
+    }else
+
+    if(navigator.mediaDevices.getDisplayMedia) {
+        navigator.mediaDevices.getDisplayMedia({video:true,audio:true}).then(stream => {
+            replaceScreenTrack(stream);
+        }, error => {
+            alert('No se pudo compartir.');
         });
     }
     else if(navigator.getDisplayMedia) {
-        navigator.getDisplayMedia(screen_constraints).then(stream => {
+        navigator.getDisplayMedia({video:true}).then(stream => {
             replaceScreenTrack(stream);
         }, error => {
-            alert('Please make sure to use Edge 17 or higher.');
+            alert('No se pudo compartir.');
         });
     }
     else {
         alert('getDisplayMedia API is not available in this browser.');
     }
+
+
+
+
 });
 </script>
 </body>
