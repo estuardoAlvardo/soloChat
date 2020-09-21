@@ -75,7 +75,7 @@ input[disabled], button[disabled] {
 }
 
 #other-videos video {
-    width: 30%;
+    width: 40%;
     margin: 5px;
     padding: 1px;
     border-radius: 3px;
@@ -212,8 +212,13 @@ input[disabled], button[disabled] {
 }
 
 
+/*imagen de fondo en video*/
+
+
+
 
 </style>
+
 
 <article style="background-image: url('../fondo.jpeg'); background-size: cover;">
  <div class="nav" style="height: 100px; margin-bottom: 5px; margin-top:0; margin-left: 15px;">
@@ -226,14 +231,25 @@ input[disabled], button[disabled] {
 
 <div id="widget-container" style="position: fixed;bottom: 0;right: 0;left: 30%;height: 100%; border-top:0; border-bottom: 0; overflow-y: scroll; box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); background-image: url('../fondo.jpeg'); background-size: cover; height: 100%;
    width: 100% ;" ></div>
-<video id="screen-viewer"   playsinline autoplay >
+<video id="screen-viewer"   playsinline autoplay  >
     
 </video>
 
 <div style="width: 30%; min-height: 100%; position: absolute;left:0; background-image: url('../fondo.jpeg'); background-size: cover;">
-    <video id="main-video" controls playsinline autoplay></video>
+    <video id="main-video"  playsinline  autoplay> </video>
+
+
+    <div class="cuadroNew cardBox" id="desactivarAudio" style="border-radius:50px; background-color: white; width: 30px;"  >
+    <img src="https://image.flaticon.com/icons/svg/3163/3163456.svg" width="30" height="30"  >
+    </div>
+
+    <div class="cuadroNew cardBox"  style="border-radius:50px; background-color: white; width: 30px; margin-top: -30px; margin-left: 40px;" onclick="muteVideo()" >
+    <img src="https://image.flaticon.com/icons/svg/3039/3039381.svg" width="30" height="30" onclick="desactivarVideo();">
+
+    </div>
 
     <div id="other-videos"></div>
+
     <hr>
     <div style="padding: 5px 10px;"  >
         <img src="https://image.flaticon.com/icons/svg/811/811885.svg" class="cardBox cuadroNew" width="50" height="50" style="border-radius:100%; background-color:white; padding: 5px;" onclick="mostrarListaUsuarios();" >
@@ -255,6 +271,10 @@ input[disabled], button[disabled] {
            document.getElementById('iconCerrar').style.display="none";
 
         }
+
+
+
+
     </script>
 
     <div style="margin-top: 20px; margin-left: 20px; position: relative; bottom: 0;background: white; padding-bottom: 20px; width: 85%; background-image: url('../fondo.jpeg'); background-size: cover;">
@@ -351,17 +371,26 @@ designer.setTools({
 // aquí va RTCMultiConnection
 
 connection.chunkSize = 16000;
+
+//habilitar el uso compartido de archivos
 connection.enableFileSharing = true;
 
+
+
 connection.session = {
-    audio: true,
-    video: true,
-    data: true
-};
+            audio: true,
+            video: true,
+            data: true
+        };
+
+
+
 connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: true,
     OfferToReceiveVideo: true
 };
+
+
 
 //mostrar listado de usuarios conectados
 connection.onUserStatusChanged = function(event) {
@@ -378,7 +407,7 @@ connection.onUserStatusChanged = function(event) {
         if(params.open==true || params.open=='true'){
         rolEnviar.innerHTML= '<em>(Docente) </em>';
 
-        
+
             }else{
                 rolEnviar.innerHTML= '<em>(Alumno) </em>';
             }
@@ -394,12 +423,13 @@ connection.onUserStatusChanged = function(event) {
     nombreUsuario.innerHTML='<em>Tú: '+connection.extra.userFullName+'</em>';
 
 
-    
-
-
 
 };
 
+
+
+        
+///para sincronizar pizarra
 connection.onopen = function(event) {
 
     connection.onUserStatusChanged(event);
@@ -423,6 +453,8 @@ connection.onclose = connection.onerror = connection.onleave = function(event) {
 
 };
 
+
+//funcion para chat
 connection.onmessage = function(event) {
 
     if(event.data.showMainVideo) {
@@ -473,8 +505,50 @@ connection.onmessage = function(event) {
     designer.syncData(event.data);
 };
 
-// extra code
 
+// create a button to toggle video 
+
+//activar y desactivar Video
+function muteVideo(){
+
+if (params.open === true || params.open === 'true') {
+
+var enmudecer= document.getElementById('main-video');
+enmudecer.srcObject.getTracks().forEach(t=>t.enabled = !t.enabled);
+}
+
+}
+
+function desactivarVideoAlumnos(idVideoDesactivar){
+
+if (params.open === true || params.open === 'true') { }else{
+alert('desactivando video id '+idVideoDesactivar);
+
+//opcion1s
+var enmudecer= document.getElementById(idVideoDesactivar);
+
+enmudecer.srcObject.getTracks().forEach(t=>t.enabled = !t.enabled);
+
+
+//opcion2
+//var localStream = connection.attachStreams[0];
+//localStream.mute('both');
+
+
+//opcion3
+
+}
+
+
+
+
+}
+
+
+
+
+
+//funcion para transmitir video
 connection.onstream = function(event) {
     if (event.stream.isScreen && !event.stream.canvasStream) {
         $('#screen-viewer').get(0).srcObject = event.stream;
@@ -483,18 +557,29 @@ connection.onstream = function(event) {
     else if (event.extra.roomOwner === true) {
         var video = document.getElementById('main-video');
         video.setAttribute('data-streamid', event.streamid);
+
+        $('#idTransmision').val(event.streamid);
+
         // video.style.display = 'none';
         if(event.type === 'local') {
             video.muted = true;
             video.volume = 0;
+
         }
+
         video.srcObject = event.stream;
         $('#main-video').show();
+
     } else {
-        event.mediaElement.controls = false;
+        event.mediaElement.controls = true;
 
         var otherVideos = document.querySelector('#other-videos');
+
         otherVideos.appendChild(event.mediaElement);
+
+        $( '<div class="cuadroNew cardBox"  style="border-radius:50px; background-color: white; width: 30px; margin-top: -15px; margin-left: 40px;" onclick="desactivarVideoAlumnos(\''+event.streamid+'\');"><img src="https://image.flaticon.com/icons/svg/3039/3039381.svg" width="30" height="30" ></div>' ).appendTo( '#other-videos' );
+
+
     }
 
     connection.onUserStatusChanged(event);
@@ -511,10 +596,15 @@ connection.onstreamended = function(event) {
     }
     if (video) {
         video.srcObject = null;
-        video.style.display = 'none';
+        video.style.display = 'block';
     }
 };
 
+
+
+
+
+//area de chat 
 var conversationPanel = document.getElementById('conversation-panel');
 
 function appendChatMessage(event, checkmark_id) {
@@ -619,6 +709,14 @@ document.getElementById('btn-chat-message').onclick = function() {
 };
 
 var recentFile;
+
+
+
+
+
+
+
+//verificamos si es el anfitrion para compartir informacion
 document.getElementById('btn-attach-file').onclick = function() {
    
     var arrayUsuarios = connection.getAllParticipants();
@@ -749,7 +847,6 @@ designer.appendTo(document.getElementById('widget-container'), function() {
             tempStream.type = 'local';
             connection.attachStreams.push(tempStream);
             window.tempStream = tempStream;
-
             connection.extra.roomOwner = true;
             connection.open(params.sessionid, function(isRoomOpened, roomid, error) {
                 if (error) {
@@ -798,6 +895,8 @@ designer.appendTo(document.getElementById('widget-container'), function() {
     }
 });
 
+
+
 function addStreamStopListener(stream, callback) {
     stream.addEventListener('ended', function() {
         callback();
@@ -825,7 +924,7 @@ function addStreamStopListener(stream, callback) {
 function replaceTrack(videoTrack, screenTrackId) {
     if (!videoTrack) return;
     if (videoTrack.readyState === 'ended') {
-        alert('Can not replace an "ended" track. track.readyState: ' + videoTrack.readyState);
+        alert('No se puede reemplazar una pista "finalizada". track.readyState: ' + videoTrack.readyState);
         return;
     }
     connection.getAllParticipants().forEach(function(pid) {
@@ -924,7 +1023,7 @@ $('#btn-share-screen').click(function() {
         });
     }
     else if(navigator.getDisplayMedia) {
-        navigator.getDisplayMedia({video:true}).then(stream => {
+        navigator.getDisplayMedia({video:true,audio:true}).then(stream => {
             replaceScreenTrack(stream);
         }, error => {
             alert('No se pudo compartir.');
