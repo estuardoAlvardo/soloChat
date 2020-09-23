@@ -8,8 +8,19 @@
   <title>Átomo - Aula virtual Activa</title>
   <meta name="description" content="Video conferencia Átomo Soluciones">
 
+
   <link rel="shortcut icon" href="/demos/logo.png">
   <link rel="stylesheet" type="text/css" href="/demos/css/emojionearea.min.css">
+
+    <!-- Materialized  init -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+    <!-- Materialized  finish -->
+
 
   <script src="/demos/js/jquery.min.js"></script>
   <link href="/demos/css/bootstrap.min.css" rel="stylesheet">
@@ -128,20 +139,15 @@ input[disabled], button[disabled] {
 
 
 #btn-attach-file {
-    width: 40px;
-    vertical-align: middle;
-    cursor: pointer;
+    
+
     display: none;
-    border-radius: 5px;
 }
 
 #btn-share-screen {
-    width: 40px;
-    vertical-align: middle;
-    cursor: pointer;
+
     display: none;
-    border-radius: 5px;
-    background-color: 
+   
 }
 
 .checkmark {
@@ -154,11 +160,9 @@ input[disabled], button[disabled] {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
     z-index: 9999999999999;
     display: none;
-    margin-top: -100px;
+    margin-top: 100px;
 }
 
 
@@ -179,11 +183,12 @@ input[disabled], button[disabled] {
 #onUserStatusChanged{
     border-radius: 5px;
     padding: 5px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: all 0.7s cubic-bezier(.25,.8,.25,1);
     margin-left:15px; 
     display: none;
     min-height: 100px;
+    margin-bottom: 50px;
 
 
 }
@@ -216,21 +221,19 @@ input[disabled], button[disabled] {
 
 
 
-
 </style>
 
 
 <article style="background-image: url('../fondo.jpeg'); background-size: cover;">
  <div class="nav" style="height: 100px; margin-bottom: 5px; margin-top:0; margin-left: 15px;">
-      <img src="../liveAtomo.png" style="width: 50px; height: 50px; margin-top: 15px;  animation: latidos .5s infinite;
-">  
+      <img src="../liveAtomo.png" style="width: 60px; height: 60px; margin-top: 15px;">  
      <h4 style="margin-top: 15px; margin-left: 15px; color: white;">Átomo Live<br> <span style="font-size: 15px; color: white;" id="nombreUsuario"></span><span id="rolEnviar" style="font-size: 10px; color: white;"></span></h4>
    
    
  </div>   
 
 <div id="widget-container" style="position: fixed;bottom: 0;right: 0;left: 30%;height: 100%; border-top:0; border-bottom: 0; overflow-y: scroll; box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); background-image: url('../fondo.jpeg'); background-size: cover; height: 100%;
-   width: 100% ;" ></div>
+   width: 90% ;" ></div>
 <video id="screen-viewer"   playsinline autoplay  >
     
 </video>
@@ -239,25 +242,41 @@ input[disabled], button[disabled] {
     <video id="main-video"  playsinline  autoplay> </video>
 
 
-    <div class="cuadroNew cardBox" id="desactivarAudio" style="border-radius:50px; background-color: white; width: 30px;"  >
-    <img src="https://image.flaticon.com/icons/svg/3163/3163456.svg" width="30" height="30"  >
+
+    
+<div class="row" style="margin-left: 10px;">
+
+       <a class="cuadroNew btn-floating btn-large waves-effect waves-light " id="btnMicroActivo" ><i class="material-icons" onclick="muteAudio();" style="background-color: #007bff;">mic_none</i></a>
+
+      <a class="cuadroNew btn-floating btn-large waves-effect waves-light red"  id="btnMicroInactivo" onclick="activarBtnMicro();" style="display: none;"><i class="material-icons">mic_off</i></a>
+
+
+   
+      <a class="cuadroNew btn-floating btn-large waves-effect waves-light " onclick="muteVideo()" id="btnCamaraActivo" style="margin-left: 10px; background-color: #007bff;"><i class="material-icons"  >camera_alt</i></a>
+
+      <a class="cuadroNew btn-floating btn-large waves-effect waves-light red" id="btnCamaraInactivo"  onclick="activarBtnCamara();" style="display: none;margin-left: 10px;" ><i class="material-icons" style="">camera</i></a>
+
+ </div>    
+
+      
+
+    <div id="other-videos" style="margin-bottom: 60px;">
+      <div id="cajaControls" class="row" style=""></div>
     </div>
-
-    <div class="cuadroNew cardBox"  style="border-radius:50px; background-color: white; width: 30px; margin-top: -30px; margin-left: 40px;" onclick="muteVideo()" >
-    <img src="https://image.flaticon.com/icons/svg/3039/3039381.svg" width="30" height="30" onclick="desactivarVideo();">
-
-    </div>
-
-    <div id="other-videos"></div>
 
     <hr>
-    <div style="padding: 5px 10px;"  >
-        <img src="https://image.flaticon.com/icons/svg/811/811885.svg" class="cardBox cuadroNew" width="50" height="50" style="border-radius:100%; background-color:white; padding: 5px;" onclick="mostrarListaUsuarios();" >
 
-        <div id="onUserStatusChanged" style="background-color: white;">
+    <div style="padding: 5px 10px;"  >
+        <img src="https://image.flaticon.com/icons/svg/811/811885.svg" class="cardBox cuadroNew" width="50" height="50" style="border-radius:100%; background-color:white; padding: 5px; display: none;"   >
+
+        <div id="onUserStatusChanged" style="background-color: white; margin-top: -50px;">
         </div>
-         <img src="https://image.flaticon.com/icons/svg/929/929416.svg" id="iconCerrar" class="cardBox cuadroNew" style="width: 30px; height: 30px;  margin-left: 10px; display: none; border-radius: 100px; background-color:#ecf0f1;  " onclick="cerrarListaUsuarios();">
-    </div>
+         <img src="https://image.flaticon.com/icons/svg/929/929416.svg" id="iconCerrar" class="cardBox cuadroNew" style="width: 30px; height: 30px; margin-top: -60px; position: absolute;   margin-left: 10px; display: none; border-radius: 100px; background-color:#ecf0f1;   " onclick="cerrarListaUsuarios();"> 
+    </div><br>
+
+          <a class="cuadroNew btn-floating btn-large waves-effect waves-light tooltipped " data-position="bottom" data-delay="50" data-tooltip="Usuarios"   style="display: block;margin-left: 10px;  background-color: #007bff; margin-top: -50px;" title="Usuario" onclick="mostrarListaUsuarios();" ><i class="material-icons" style="">group</i></a>
+         
+
 
     <script type="text/javascript">
        function mostrarListaUsuarios(){
@@ -273,9 +292,8 @@ input[disabled], button[disabled] {
         }
 
 
-
-
     </script>
+
 
     <div style="margin-top: 20px; margin-left: 20px; position: relative; bottom: 0;background: white; padding-bottom: 20px; width: 85%; background-image: url('../fondo.jpeg'); background-size: cover;">
         <div id="conversation-panel"></div>
@@ -284,10 +302,19 @@ input[disabled], button[disabled] {
             <img src="https://www.webrtc-experiment.com/images/key-press.gif" style="height: 30px; vertical-align: middle;">
         </div>
         <textarea id="txt-chat-message" placeholder="Mensaje para el grupo"></textarea>
-        <button class="btn btn-primary" id="btn-chat-message" disabled>Enviar</button>
-        <img id="btn-attach-file" src="https://image.flaticon.com/icons/svg/2921/2921290.svg" class="cardBox
-         cuadroNew" title="Compartir Archivos">
-        <img id="btn-share-screen" src="https://image.flaticon.com/icons/svg/3063/3063838.svg" class="cardBox cuadroNew" title="Compartir Pantalla">
+
+         <div class="row">
+        <button class="col s2 m2 l2 btn waves-effect waves-light" style="background-color: rgb(61, 90, 254);" id="btn-chat-message" type="submit" name="action" disabled>Enviar Mensaje
+        <i class="material-icons right">send</i>
+        </button>
+
+       
+        <div style="margin-top: 10px;">
+        <a  id="btn-attach-file" class="cuadroNew btn-floating btn-small waves-effect waves-light orange" id="btnMicroActivo" ><i class="material-icons">attach_file</i></a>
+        <a id="btn-share-screen" class="cuadroNew btn-floating btn-small waves-effect waves-light orange" id="btnMicroActivo" ><i class="material-icons">screen_share</i></a>
+        </div>
+        </div>
+
 
     </div>
 
@@ -334,14 +361,27 @@ connection.maxParticipantsAllowed = 1000;
 // aquí va el diseñador de lienzos
 var designer = new CanvasDesigner();
 
+
+ if (params.open === true || params.open === 'true') {
 // puedes colocar widget.html en cualquier lugar
-designer.widgetHtmlURL = '/node_modules/canvas-designer/widget.html';
-designer.widgetJsURL = '/node_modules/canvas-designer/widget.min.js'
+designer.widgetHtmlURL = '/node_modules/canvas-designer/widget.html?tipoUsuario=1';
+}else{
+designer.widgetHtmlURL = '/node_modules/canvas-designer/widget.html?tipoUsuario=2';
+
+}
+
 
 designer.addSyncListener(function(data) {
     connection.send(data);
 });
+ 
 
+
+
+
+
+//mostramos los botones de activar y desactivar camara
+ if (params.open === true || params.open === 'true') {
 designer.setSelected('pencil');
 
 designer.setTools({
@@ -357,8 +397,8 @@ designer.setTools({
     arc: true,
     rectangle: true,
     quadratic: false,
-    bezier: true,
-    marker: false,
+    bezier: false,
+    marker: true,
     zoom: false,
     lineWidth: false,
     colorsPicker: false,
@@ -366,6 +406,40 @@ designer.setTools({
     code: false,
     undo: true
 });
+ 
+
+  }else{
+
+     Materialize.toast('Usted no tiene permiso para usar la pizarra!', 10000, 'rounded');
+
+designer.setTools({
+    pencil: false,
+    text: false,
+    image: false,
+    pdf: false,
+    eraser: false,
+    line: false,
+    arrow: false,
+    dragSingle: false,
+    dragMultiple: false,
+    arc: false,
+    rectangle: false,
+    quadratic: false,
+    bezier: false,
+    marker: false,
+    zoom: false,
+    lineWidth: false,
+    colorsPicker: false,
+    extraOptions: false,
+    code: false,
+    undo: false
+});
+    $('#btnMicroActivo').css("display","none");
+    $('#btnCamaraActivo').css("display","none");
+
+    //estilos para compartir pantalla alumno
+
+  }
 
 
 // aquí va RTCMultiConnection
@@ -389,6 +463,45 @@ connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: true,
     OfferToReceiveVideo: true
 };
+
+
+
+
+//estilos buttons desactivar y activar camara y microfono
+
+function activarBtnMicro(){
+
+    if (params.open === true || params.open === 'true') {
+    var enmudecer= document.getElementById('main-video');
+    
+    enmudecer.srcObject.getAudioTracks().forEach(t=>t.enabled = !t.enabled);
+
+
+    $('#btnMicroActivo').css("display","block");
+    $('#btnMicroInactivo').css("display","none");
+
+ Materialize.toast('Se activo microfono!', 3000, 'rounded')
+
+
+  }
+}
+
+function activarBtnCamara(){
+
+    if (params.open === true || params.open === 'true') {
+
+var enmudecer= document.getElementById('main-video');
+enmudecer.srcObject.getVideoTracks().forEach(t=>t.enabled = !t.enabled);
+
+    $('#btnCamaraActivo').css("display","block");
+    $('#btnCamaraInactivo').css("display","none");
+
+ Materialize.toast('Se activo camara!', 3000, 'rounded')
+
+
+}
+    
+}
 
 
 
@@ -436,10 +549,11 @@ connection.onopen = function(event) {
 
     if (designer.pointsLength <= 0) {
         // se asegura de que el usuario remoto sincronice todos los dibujos.
-
         setTimeout(function() {
             connection.send('plz-sync-points');
         }, 1000);
+
+
     }
 
     document.getElementById('btn-chat-message').disabled = false;
@@ -457,12 +571,14 @@ connection.onclose = connection.onerror = connection.onleave = function(event) {
 //funcion para chat
 connection.onmessage = function(event) {
 
+//transmision de pantalla alumnos
     if(event.data.showMainVideo) {
          $('#main-video').show();
-        $('#screen-viewer').css({
-            left: $('#widget-container').offset().left,
-            width: $('#widget-container').width(),
-            height: $('#widget-container').height()
+         $('#screen-viewer').css({
+            top: "0%",
+            left: "30%",
+            width: "75%",
+            height: "75%"
         });
         $('#screen-viewer').show();
         return;
@@ -497,16 +613,80 @@ connection.onmessage = function(event) {
         return;
     }
 
+    
+
     if (event.data === 'plz-sync-points') {
         designer.sync();
         return;
     }
 
     designer.syncData(event.data);
+
 };
 
 
-// create a button to toggle video 
+//desactivar audio
+
+function muteAudio(){
+
+    if (params.open === true || params.open === 'true') {
+    var enmudecer= document.getElementById('main-video');
+    
+    enmudecer.srcObject.getAudioTracks().forEach(t=>t.enabled = !t.enabled);
+
+
+    $('#btnMicroActivo').css("display","none");
+    $('#btnMicroInactivo').css("display","block");
+ Materialize.toast('Se desactivo microfono!', 3000, 'rounded');
+
+
+
+  }
+}
+
+
+//desactivar audio alumnos
+
+function desactivarAudioAlumnos(idAudioDesactivar){
+
+if (params.open === true || params.open === 'true') { }else{
+//alert('desactivando video id '+idVideoDesactivar);
+
+//opcion1s
+var enmudecer= document.getElementById(idAudioDesactivar);
+
+enmudecer.srcObject.getAudioTracks().forEach(t=>t.enabled = !t.enabled);
+
+    $('#audioActivo'+idAudioDesactivar).css("display","none");
+    $('#audioInactivo'+idAudioDesactivar).css("display","block");
+     Materialize.toast('Se desactivo microfono!', 3000, 'rounded');
+
+}
+
+}
+
+function activarAudioAlumnos(idAudioDesactivar){
+
+if (params.open === true || params.open === 'true') { }else{
+//alert('desactivando video id '+idVideoDesactivar);
+
+//opcion1s
+var enmudecer= document.getElementById(idAudioDesactivar);
+
+enmudecer.srcObject.getAudioTracks().forEach(t=>t.enabled = !t.enabled);
+
+    $('#audioActivo'+idAudioDesactivar).css("display","block");
+    $('#audioInactivo'+idAudioDesactivar).css("display","none");
+    Materialize.toast('Se activo microfono!', 3000, 'rounded');
+
+
+}
+
+}
+
+
+
+
 
 //activar y desactivar Video
 function muteVideo(){
@@ -514,32 +694,54 @@ function muteVideo(){
 if (params.open === true || params.open === 'true') {
 
 var enmudecer= document.getElementById('main-video');
-enmudecer.srcObject.getTracks().forEach(t=>t.enabled = !t.enabled);
+enmudecer.srcObject.getVideoTracks().forEach(t=>t.enabled = !t.enabled);
+
+    $('#btnCamaraActivo').css("display","none");
+    $('#btnCamaraInactivo').css("display","block");
+    Materialize.toast('Se desactivo camara!', 3000, 'rounded');
+
 }
 
 }
+
+
 
 function desactivarVideoAlumnos(idVideoDesactivar){
 
 if (params.open === true || params.open === 'true') { }else{
-alert('desactivando video id '+idVideoDesactivar);
+
+    //alert('desactivando video id '+idVideoDesactivar);
 
 //opcion1s
 var enmudecer= document.getElementById(idVideoDesactivar);
 
-enmudecer.srcObject.getTracks().forEach(t=>t.enabled = !t.enabled);
+enmudecer.srcObject.getVideoTracks().forEach(t=>t.enabled = !t.enabled);
 
-
-//opcion2
-//var localStream = connection.attachStreams[0];
-//localStream.mute('both');
-
-
-//opcion3
+    $('#videoActivo'+idVideoDesactivar).css("display","none");
+    $('#videoInactivo'+idVideoDesactivar).css("display","block");
+    Materialize.toast('Se desactivo la camara!', 3000, 'rounded');
 
 }
 
 
+}
+
+function activarVideoAlumnos(idVideoDesactivar){
+
+if (params.open === true || params.open === 'true') { }else{
+
+    //alert('desactivando video id '+idVideoDesactivar);
+
+//opcion1s
+var enmudecer= document.getElementById(idVideoDesactivar);
+
+enmudecer.srcObject.getVideoTracks().forEach(t=>t.enabled = !t.enabled);
+
+    $('#videoActivo'+idVideoDesactivar).css("display","block");
+    $('#videoInactivo'+idVideoDesactivar).css("display","none");
+    Materialize.toast('Se activo la camara!', 3000, 'rounded');
+
+}
 
 
 }
@@ -550,6 +752,8 @@ enmudecer.srcObject.getTracks().forEach(t=>t.enabled = !t.enabled);
 
 //funcion para transmitir video
 connection.onstream = function(event) {
+
+
     if (event.stream.isScreen && !event.stream.canvasStream) {
         $('#screen-viewer').get(0).srcObject = event.stream;
         $('#screen-viewer').hide();
@@ -571,13 +775,38 @@ connection.onstream = function(event) {
         $('#main-video').show();
 
     } else {
-        event.mediaElement.controls = true;
+        event.mediaElement.controls = false;
 
         var otherVideos = document.querySelector('#other-videos');
 
         otherVideos.appendChild(event.mediaElement);
 
-        $( '<div class="cuadroNew cardBox"  style="border-radius:50px; background-color: white; width: 30px; margin-top: -15px; margin-left: 40px;" onclick="desactivarVideoAlumnos(\''+event.streamid+'\');"><img src="https://image.flaticon.com/icons/svg/3039/3039381.svg" width="30" height="30" ></div>' ).appendTo( '#other-videos' );
+
+       if (params.open === true || params.open === 'true'){
+
+             Materialize.toast('Se unio un nuevo alumno' , 3000, 'rounded');
+
+
+       }else{
+
+
+        $('#other-videos').append('<div id="controlsIndividual'+event.streamid+'" style=""> </div>');
+
+
+           if (event.userid === connection.userid) {
+        
+           $('<div class="row" style="margin-left:10px;"><a class="cuadroNew btn-floating btn-small waves-effect waves-light " id="audioActivo'+event.streamid+'" ><i class="material-icons" onclick="desactivarAudioAlumnos(\''+event.streamid+'\');"  style="background-color: #007bff;">mic_none</i></a><a class="cuadroNew btn-floating btn-small waves-effect waves-light red" onclick="activarAudioAlumnos(\''+event.streamid+'\');"   id="audioInactivo'+event.streamid+'" onclick="activarBtnMicro();" style="display: none;"><i class="material-icons">mic_off</i></a><a class="cuadroNew btn-floating btn-small waves-effect waves-light " onclick="desactivarVideoAlumnos(\''+event.streamid+'\');" id="videoActivo'+event.streamid+'" style="margin-left: 10px; background-color: #007bff;"><i class="material-icons"  >camera_alt</i></a><a class="cuadroNew btn-floating btn-small waves-effect waves-light red" id="videoInactivo'+event.streamid+'"  onclick="activarVideoAlumnos(\''+event.streamid+'\');" style="display: none;margin-left: 10px;" ><i class="material-icons" style="">camera</i></a></div>').appendTo( '#controlsIndividual'+event.streamid);
+
+      
+        //$( '<div class="cuadroNew cardBox"  onclick="desactivarAudioAlumnos(\''+event.streamid+'\');"  style="border-radius:50px; background-color: white; width: 30px;"  ><img src="https://image.flaticon.com/icons/svg/3163/3163456.svg" width="30" height="30"  ></div>' ).appendTo( '#other-videos' );
+
+       
+
+       // $( '<div class="cuadroNew cardBox"  style="border-radius:50px; background-color: white; width: 30px; margin-top: -15px; margin-left: 40px;" onclick="desactivarVideoAlumnos(\''+event.streamid+'\');"><img src="https://image.flaticon.com/icons/svg/3039/3039381.svg" width="30" height="30" ></div>' ).appendTo( '#other-videos' );
+
+     }
+       
+    }
 
 
     }
@@ -591,6 +820,11 @@ connection.onstreamended = function(event) {
         video = document.getElementById(event.streamid);
         if (video) {
             video.parentNode.removeChild(video);
+
+    $('#videoActivo'+event.streamid).css("display","none");
+    $('#audioActivo'+event.streamid).css("display","none");
+    Materialize.toast('Se desconecto un alumno' , 3000, 'rounded');
+
             return;
         }
     }
@@ -737,7 +971,7 @@ document.getElementById('btn-attach-file').onclick = function() {
     });
 
 }else{
-    alert('No tienes permiso para subir archivos');
+ Materialize.toast('No tienes permiso para subir archivos!', 3000, 'rounded');
 }
 };
 
@@ -865,7 +1099,8 @@ designer.appendTo(document.getElementById('widget-container'), function() {
         connection.join(params.sessionid, function(isRoomJoined, roomid, error) {
             if (error) {
                 if (error === connection.errors.ROOM_NOT_AVAILABLE) {
-                    alert('Esta clase aún no existe. Espere a que el profesor ingrese a la clase.');
+                     Materialize.toast('Esta clase aún no existe. Espere a que el profesor ingrese a la clase.!', 10000, 'rounded');
+
                     return;
                 }
                 if (error === connection.errors.ROOM_FULL) {
@@ -875,7 +1110,7 @@ designer.appendTo(document.getElementById('widget-container'), function() {
                 if (error === connection.errors.INVALID_PASSWORD) {
                     connection.password = prompt('Ingrese cotraseña de la conferencia.') || '';
                     if(!connection.password.length) {
-                        alert('Contraseña invalida.');
+                         Materialize.toast('Contraseña invalida!', 3000, 'rounded');
                         return;
                     }
                     connection.join(params.sessionid, function(isRoomJoined, roomid, error) {
@@ -985,19 +1220,24 @@ function replaceScreenTrack(stream) {
         showMainVideo: true
     });
 
+
     $('#main-video').show();
+
+
+    //transmision de pantalla docente anfitrion
     $('#screen-viewer').css({
-            top: $('#widget-container').offset().top,
-            left: $('#widget-container').offset().left,
-            width: $('#widget-container').width(),
-            height: $('#widget-container').height()
+            top: "0%",
+            left: "30%",
+            width: "75%",
+            height: "75%"
         });
+
     $('#screen-viewer').show();
 }
 
 $('#btn-share-screen').click(function() {
     if(!window.tempStream) {
-        alert('No tienes permiso para compartir pantalla.');
+         Materialize.toast('No tienes permiso para compartir pantalla.!', 3000, 'rounded');
         return;
     }
 
@@ -1011,7 +1251,9 @@ $('#btn-share-screen').click(function() {
         navigator.mediaDevices.getDisplayMedia({video:true,audio:true}).then(stream => {
             replaceScreenTrack(stream);
         }, error => {
-            alert('No se pudo compartir.');
+        Materialize.toast('No se pudo compartir.!', 3000, 'rounded');
+
+
         });
     }else
 
@@ -1019,18 +1261,22 @@ $('#btn-share-screen').click(function() {
         navigator.mediaDevices.getDisplayMedia({video:true,audio:true}).then(stream => {
             replaceScreenTrack(stream);
         }, error => {
-            alert('No se pudo compartir.');
+
+        Materialize.toast('No se pudo compartir.!', 3000, 'rounded');
+
         });
     }
     else if(navigator.getDisplayMedia) {
         navigator.getDisplayMedia({video:true,audio:true}).then(stream => {
             replaceScreenTrack(stream);
         }, error => {
-            alert('No se pudo compartir.');
+            Materialize.toast('No se pudo compartir.!', 3000, 'rounded');
+
         });
     }
     else {
-        alert('getDisplayMedia API is not available in this browser.');
+        Materialize.toast('getDisplayMedia API. no funciona en tu navegador!', 3000, 'rounded');
+
     }
 
 
