@@ -1,19 +1,19 @@
-﻿<!-- Demo version: 2018.12.11 -->
+﻿<!-- Demo version: 2018.12.01 -->
 
 <!DOCTYPE html>
-<html lang="es" dir="ltr">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Panel Videoconferencias</title>
+  <title>Dashboard + Video Conferencing + Chat + File Sharing | RTCMultiConnection</title>
   <meta name="description" content="WebRTC Dashboard including support for canvas drawing, canvas data syncing, video conferencing, screen sharing and video conferencing. Including chat and file sharing.">
 
-  <link rel="shortcut icon" href="/demos/logo.png">
+  <link rel="shortcut icon" href="/transmition/logo.png">
 
-  <link href="/demos/css/bootstrap.min.css" rel="stylesheet">
-  <script src="/demos/js/jquery-3.3.1.slim.min.js"></script>
-  <script src="/demos/js/popper.min.js"></script>
-  <script src="/demos/js/bootstrap.min.js"></script>
+  <link href="/transmition/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/transmition/js/jquery-3.3.1.slim.min.js"></script>
+  <script src="/transmition/js/popper.min.js"></script>
+  <script src="/transmition/js/bootstrap.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/dist/RTCMultiConnection.min.js"></script>
 
@@ -36,7 +36,7 @@ body {
 
 header {
   border-bottom: 1px solid #95d4e7;
-  min-height: 70px;
+  height: 70px;
 }
 
 a {
@@ -51,8 +51,7 @@ a:hover {
     float: left;
     margin-left: 20px;
     display: block;
-    height: 100px;
-    width: 100px
+    height: 55px;
 }
 
 .logo-text {
@@ -62,7 +61,6 @@ a:hover {
     margin-left: 9px;
     font-weight: bold;
     color: #0194ff;
-    padding-bottom: 100px;
 }
 
 section {
@@ -291,71 +289,68 @@ input[disabled], button[disabled] {
   text-overflow: ellipsis;
   display: block;
 }
-
-#profesor{
-  margin-top: 3px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align:left;
-}
-
-
-
 </style>
 </head>
 <body>
-  <header style="margin-bottom: 100px;">
-    <img class="logo" src="/demos/liveAtomo.png" alt="" /> <span class="logo-text">Aulas Virtuales Átomo</span></h4>
-    <div style="float: right;margin-top: 15px;">
-      <button class="btn btn-primary" data-toggle="modal" data-target="#startRoomModel">Crear clase virtual</button>
-      <button id="btn-show-join-hidden-room" class="top-span btn btn-secondary" data-toggle="modal" data-target="#joinRoomModel">Unirse a clase</button>
-      <span class="top-span">Clases Activas: <span id="active-rooms">0</span></span>
-    </div>
+  <header style="margin-bottom: 20px;">
+    <img class="logo" src="/transmition/logo.png" alt="RTCMultiConnection" /> <span class="logo-text">Dashboard Example</span>
 
+    <div style="float: right;margin-top: 15px;">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#startRoomModel">Create A New Room</button>
+      <button id="btn-show-join-hidden-room" class="top-span btn btn-secondary" data-toggle="modal" data-target="#joinRoomModel">Join A Room</button>
+      <span class="top-span">Active rooms: <span id="active-rooms">0</span></span>
+    </div>
   </header>
 
   <div class="modal fade" id="startRoomModel" tabindex="-1" role="dialog" aria-labelledby="startRoomModelLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="startRoomModelLabel">Crear nueva clase</h5>
+          <h5 class="modal-title" id="startRoomModelLabel">Create A New Room</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" style="padding-bottom: 0;">
+        <div class="modal-body">
           <form>
             <div class="form-group">
               <p>
-                <label for="txt-roomid" class="col-form-label">Ingrese nombre de clase virtual:</label>
+                <label for="demo-type" class="col-form-label">Set Demo Type:</label>
+                <select id="demo-type" class="form-control">
+                    <option value="normal">Canvas Tool + Chat</option>
+                    <option value="canvas-stream" selected>Canvas Tool + Chat + Canvas Stream</option>
+                    <option value="screen-sharing">Canvas Tool + Chat + Screen Sharing</option>
+                </select>
+              </p>
+
+              <p>
+                <label for="txt-roomid" class="col-form-label">Enter Room ID:</label>
                 <input type="text" class="form-control" id="txt-roomid">
               </p>
 
               <p>
-                <label for="txt-user-name" class="col-form-label">Ingrese su nombre:</label>
+                <label for="txt-user-name" class="col-form-label">Enter Your Name:</label>
                 <input type="text" class="form-control" id="txt-user-name">
               </p>
 
               <p style="display: none;">
-                <label for="txt-room-password" class="col-form-label">Ingrese contraseña de clase:</label>
+                <label for="txt-room-password" class="col-form-label">Enter Room Password:</label>
                 <input type="text" class="form-control" id="txt-room-password">
               </p>
 
-              <a href="" style="float: right; margin-bottom: 10px; font-size: 14px;" onclick="event.preventDefault();$('.more-options').show();$(this).hide();">Ver más opciones</a>
-
-              <p class="more-options" style="margin-bottom: 0; display: none;">
-                <label class="col-form-label"><input type="checkbox" id="chk-room-password"> ¿Quiere agregar contraseña a su clase?</label>
-              </p>
-
-              <p class="more-options" style="margin-top: 0; margin-bottom: 0; display: none;">
-                <label class="col-form-label"><input type="checkbox" id="chk-hidden-room"> Ocultar está clase? (No aparecera en la lista)</label>
+              <p>
+                <label class="col-form-label"><input type="checkbox" id="chk-hidden-room"> Hidden Room? (Hide from the list)</label>
               </p>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="btn-create-room">Crear</button>
+          <p style="position: absolute;left: 20px;">
+            <label class="col-form-label"><input type="checkbox" id="chk-room-password"> Set Room Password?</label>
+          </p>
+
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="btn-create-room">Create</button>
         </div>
       </div>
     </div>
@@ -365,7 +360,7 @@ input[disabled], button[disabled] {
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="joinRoomModelLabel">Unirse a la clase</h5>
+          <h5 class="modal-title" id="joinRoomModelLabel">Join A Room</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -374,25 +369,25 @@ input[disabled], button[disabled] {
           <form>
             <div class="form-group">
               <p>
-                <label for="txt-roomid-hidden" class="col-form-label" >Se unira a la clase:</label>
-                <input type="text" class="form-control" id="txt-roomid-hidden" disabled>
+                <label for="txt-roomid-hidden" class="col-form-label">Enter Room ID:</label>
+                <input type="text" class="form-control" id="txt-roomid-hidden">
               </p>
 
               <p>
-                <label for="txt-user-name-hidden" class="col-form-label">Ingrese su nombre:</label>
+                <label for="txt-user-name-hidden" class="col-form-label">Enter Your Name:</label>
                 <input type="text" class="form-control" id="txt-user-name-hidden">
               </p>
 
               <p style="display: none;">
-                <label for="txt-room-password-hidden" class="col-form-label">Ingrese contraseña de clase:</label>
+                <label for="txt-room-password-hidden" class="col-form-label">Enter Room Password:</label>
                 <input type="text" class="form-control" id="txt-room-password-hidden">
               </p>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="btn-join-hidden-room">Unirse</button>
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="btn-join-hidden-room">Join</button>
         </div>
       </div>
     </div>
@@ -444,25 +439,21 @@ input[disabled], button[disabled] {
       <thead>
         <tr>
           <th>#</th>
-          <th>Aulas Virtuales</th>
-          <th>ID Conferencia</th>
-          <th>Permisos de sesion</th>
+          <th>Room ID</th>
+          <th>Owner ID</th>
+          <th>Session</th>
           <th>Extra</th>
-          <th>Participantes</th>
-          <th>Unirse a la clase</th>
+          <th>Participants</th>
+          <th>Join</th>
         </tr>
       </thead>
-      <tbody id="rooms-list"><tr><td colspan=9>Aun no hay clases creadas</td></tr></tbody>
+      <tbody id="rooms-list"><tr><td colspan=9>No active room found for this demo.</td></tr></tbody>
     </table>
   </section>
 
-  <footer style="text-align: center;">(c) Todos los derechos reservados Soluciones Didácticas Innovadoras S.A</footer>
+  <footer style="text-align: center;">Dashboard + Video Conferencing + Chat + File Sharing</footer>
 
 <script>
-//obtenemos variables del gestor de curso y seteamos campos necesarios final
-
-
-
 // this object is used to get uniquie rooms based on this demo
 // i.e. only those rooms that are created on this page
 var publicRoomIdentifier = 'dashboard';
@@ -502,7 +493,7 @@ function updateListOfRooms(rooms) {
     $('#rooms-list').html('');
 
     if (!rooms.length) {
-        $('#rooms-list').html('<tr><td colspan=9>No hay clases virutales aun!!</td></tr>');
+        $('#rooms-list').html('<tr><td colspan=9>No active room found for this demo.</td></tr>');
         return;
     }
 
@@ -539,7 +530,7 @@ function updateListOfRooms(rooms) {
           html += '<td><span style="border-bottom: 1px dotted red; color: red;">Room is full</span></td>';
         }
         else {
-          html += '<td><button class="btn join-room" data-roomid="' + room.sessionid + '" data-password-protected="' + (room.isPasswordProtected === true ? 'true' : 'false') +'">Unirse</button></td>';
+          html += '<td><button class="btn join-room" data-roomid="' + room.sessionid + '" data-password-protected="' + (room.isPasswordProtected === true ? 'true' : 'false') +'">Join</button></td>';
         }
         
         $(tr).html(html);
@@ -631,11 +622,13 @@ function joinAHiddenRoom(roomid) {
 
 function openCanvasDesigner() {
     $('#startRoomModel').modal('hide');
-    var href = location.href + 'canvas-designer.html?open=' + connection.isInitiator + '&sessionid=' + connection.sessionid + '&publicRoomIdentifier=' + connection.publicRoomIdentifier + '&userFullName=' + connection.extra.userFullName;
+    var href = './canvas-designer-old.html?open=' + connection.isInitiator + '&sessionid=' + connection.sessionid + '&publicRoomIdentifier=' + connection.publicRoomIdentifier + '&userFullName=' + connection.extra.userFullName;
     
     if(!!connection.password) {
       href += '&password=' + connection.password;
     }
+
+    href += '&demoType=' + $('#demo-type').val();
 
     var newWin = window.open(href);
     if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
@@ -703,9 +696,7 @@ function confirmBox(message, callback) {
 }
 
 $('#btn-create-room').click(function() {
-
     var roomid = $('#txt-roomid').val().toString();
-
     if (!roomid || !roomid.replace(/ /g, '').length) {
         alertBox('Please enter room-id.', 'Room ID Is Required');
         return;
@@ -722,7 +713,7 @@ $('#btn-create-room').click(function() {
     if($('#chk-room-password').prop('checked') === true){
       var roomPassword = $('#txt-room-password').val().toString();
       if (!roomPassword || !roomPassword.replace(/ /g, '').length) {
-          alertBox('Ingrese la contraseña de la conferencia.', 'Contraseña de conferencia vacio');
+          alertBox('Please enter room password.', 'Password Box Is Empty');
           return;
       }
 
@@ -780,17 +771,6 @@ if (localStorage.getItem('canvas-designer-user-full-name')) {
     userFullName.value = localStorage.getItem('canvas-designer-user-full-name');
     $('#txt-user-name-hidden').val(userFullName.value);
 }
-
-
-
-
-
-
-  
-
 </script>
-
-
-
 </body>
 </html>

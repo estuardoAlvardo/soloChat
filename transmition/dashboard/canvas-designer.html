@@ -9,8 +9,8 @@
   <meta name="description" content="Video conferencia Átomo Soluciones">
 
 
-  <link rel="shortcut icon" href="/demos/logo.png">
-  <link rel="stylesheet" type="text/css" href="/demos/css/emojionearea.min.css">
+  <link rel="shortcut icon" href="/transmition/logo.png">
+  <link rel="stylesheet" type="text/css" href="/transmition/css/emojionearea.min.css">
 
     <!-- Materialized  init -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
@@ -22,8 +22,8 @@
     <!-- Materialized  finish -->
 
 
-  <script src="/demos/js/jquery.min.js"></script>
-  <link href="/demos/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/transmition/js/jquery.min.js"></script>
+  <link href="/transmition/css/bootstrap.min.css" rel="stylesheet">
   <script src="/node_modules/webrtc-adapter/out/adapter.js"></script>
   <script src="/dist/RTCMultiConnection.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
@@ -31,7 +31,7 @@
 
   <script src="/node_modules/canvas-designer/dev/webrtc-handler.js"></script>
   <script src="/node_modules/canvas-designer/canvas-designer-widget.js"></script>
-  <script src="/demos/js/emojionearea.min.js"></script>
+  <script src="/transmition/js/emojionearea.min.js"></script>
 
   <link rel="stylesheet" href="/dev/getHTMLMediaElement.css">
 <script src="/dev/getHTMLMediaElement.js"></script>
@@ -225,43 +225,25 @@ input[disabled], button[disabled] {
 
 
 <article style="background-image: url('../fondo.jpeg'); background-size: cover;">
- <div class="nav" style="height: 100px; margin-bottom: 5px; margin-top:0; margin-left: 15px;">
+ <div class="nav" style="height: 100%; margin-bottom: 5px; margin-top:0; margin-left: 15px;">
       <img src="../liveAtomo.png" style="width: 60px; height: 60px; margin-top: 15px;">  
      <h4 style="margin-top: 15px; margin-left: 15px; color: white;">Átomo Live<br> <span style="font-size: 15px; color: white;" id="nombreUsuario"></span><span id="rolEnviar" style="font-size: 10px; color: white;"></span></h4>
    
    
  </div>   
 
-<div id="widget-container" style="position: fixed;bottom: 0;right: 0;left: 30%;height: 100%; border-top:0; border-bottom: 0; overflow-y: scroll; box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); background-image: url('../fondo.jpeg'); background-size: cover; height: 100%;
+<div id="widget-container" style="display: none; position: fixed;bottom: 0;right: 0;left: 30%;height: 100%; border-top:0; border-bottom: 0; overflow-y: scroll; box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); background-image: url('../fondo.jpeg'); background-size: cover; height: 100%;
    width: 90% ;" ></div>
-<video id="screen-viewer"   playsinline autoplay  >
     
 </video>
 
-<div style="width: 30%; min-height: 100%; position: absolute;left:0; background-image: url('../fondo.jpeg'); background-size: cover;">
-    <video id="main-video"  playsinline  autoplay> </video>
 
 
 
     
-<div class="row" style="margin-left: 10px;">
-
-       <a class="cuadroNew btn-floating btn-large waves-effect waves-light " id="btnMicroActivo" ><i class="material-icons" onclick="muteAudio();" style="background-color: #007bff;">mic_none</i></a>
-
-      <a class="cuadroNew btn-floating btn-large waves-effect waves-light red"  id="btnMicroInactivo" onclick="activarBtnMicro();" style="display: none;"><i class="material-icons">mic_off</i></a>
-
-
-   
-      <a class="cuadroNew btn-floating btn-large waves-effect waves-light " onclick="muteVideo()" id="btnCamaraActivo" style="margin-left: 10px; background-color: #007bff;"><i class="material-icons"  >camera_alt</i></a>
-
-      <a class="cuadroNew btn-floating btn-large waves-effect waves-light red" id="btnCamaraInactivo"  onclick="activarBtnCamara();" style="display: none;margin-left: 10px;" ><i class="material-icons" style="">camera</i></a>
-
- </div>    
 
       
 
-    <div id="other-videos" style="margin-bottom: 60px;">
-      <div id="cajaControls" class="row" style=""></div>
     </div>
 
     <hr>
@@ -269,12 +251,11 @@ input[disabled], button[disabled] {
     <div style="padding: 5px 10px;"  >
         <img src="https://image.flaticon.com/icons/svg/811/811885.svg" class="cardBox cuadroNew" width="50" height="50" style="border-radius:100%; background-color:white; padding: 5px; display: none;"   >
 
-        <div id="onUserStatusChanged" style="background-color: white; margin-top: -50px;">
+        <div id="onUserStatusChanged" style="background-color: white; margin-top: -50px; display: none;">
         </div>
          <img src="https://image.flaticon.com/icons/svg/929/929416.svg" id="iconCerrar" class="cardBox cuadroNew" style="width: 30px; height: 30px; margin-top: -60px; position: absolute;   margin-left: 10px; display: none; border-radius: 100px; background-color:#ecf0f1;   " onclick="cerrarListaUsuarios();"> 
     </div><br>
 
-          <a class="cuadroNew btn-floating btn-large waves-effect waves-light tooltipped " data-position="bottom" data-delay="50" data-tooltip="Usuarios"   style="display: block;margin-left: 10px;  background-color: #007bff; margin-top: -50px;" title="Usuario" onclick="mostrarListaUsuarios();" ><i class="material-icons" style="">group</i></a>
          
 
 
@@ -295,8 +276,8 @@ input[disabled], button[disabled] {
     </script>
 
 
-    <div style="margin-top: 20px; margin-left: 20px; position: relative; bottom: 0;background: white; padding-bottom: 20px; width: 85%; background-image: url('../fondo.jpeg'); background-size: cover;">
-        <div id="conversation-panel"></div>
+    <div style="margin-top: 20px; margin-left: 20px; position: relative; bottom: 0;background: white; padding-bottom: 5%; width: 85%; background-image: url('../fondo.jpeg'); background-size: cover;">
+        <div id="conversation-panel" style="margin-top: 300px; min-height: 100px;"></div>
         <div id="key-press" style="text-align: right; display: none; font-size: 11px;">
             <span style="vertical-align: middle;"></span>
             <img src="https://www.webrtc-experiment.com/images/key-press.gif" style="height: 30px; vertical-align: middle;">
@@ -385,26 +366,26 @@ designer.addSyncListener(function(data) {
 designer.setSelected('pencil');
 
 designer.setTools({
-    pencil: true,
-    text: true,
-    image: true,
-    pdf: true,
-    eraser: true,
-    line: true,
-    arrow: true,
-    dragSingle: true,
-    dragMultiple: true,
-    arc: true,
-    rectangle: true,
+    pencil: false,
+    text: false,
+    image: false,
+    pdf: false,
+    eraser: false,
+    line: false,
+    arrow: false,
+    dragSingle: false,
+    dragMultiple: false,
+    arc: false,
+    rectangle: false,
     quadratic: false,
     bezier: false,
-    marker: true,
+    marker: false,
     zoom: false,
     lineWidth: false,
     colorsPicker: false,
     extraOptions: false,
     code: false,
-    undo: true
+    undo: false
 });
  
 
@@ -1221,7 +1202,6 @@ function replaceScreenTrack(stream) {
     });
 
 
-    $('#main-video').show();
 
 
     //transmision de pantalla docente anfitrion
